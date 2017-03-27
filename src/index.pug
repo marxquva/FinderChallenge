@@ -1,0 +1,62 @@
+doctype html
+html(lang="es", data-ng-app="challengeApp")
+    head
+        title Finder challenge
+        meta(charset="utf-8")
+        meta(viewport="width=device-width, initial-scale=1.0")
+        link(href="https://fonts.googleapis.com/css?family=Proxima+Nova", rel="stylesheet", type="text/css")
+        link(href="libraries/css/libraries.min.css", rel="stylesheet")
+        link(href="styles/index.css", rel="stylesheet")
+
+    body(data-ng-controller="MainController")
+        .app.content
+            header.pure-g
+                .pure-u-1.pure-u-md-1-4
+                    h1 {{name_logotipo}}
+                .pure-u-1.pure-u-md-3-4
+                    form.pure-form
+                        fieldset
+                            ng-field-search(ng-model="bookName")
+                            button(type="button").pure-button.pure-button-primary Buscar
+                            label
+                                a(href="#") Guardar busqueda
+            .pure-g
+                aside.filters.pure-u-1.pure-u-md-1-4
+                    h2 Búsquedas guardadas
+                    ul(data-ng-repeat="s in saved").pure-menu-list
+                        li.pure-menu-item: a(href="#") {{s.label}}
+                    h2 Categorías
+                    ul(data-ng-repeat="c in categories").pure-menu-list
+                        li.pure-menu-item: a(ui-sref="main({categorie: c.indice})", ng-click="filtrarCategoria(c)", ng-class="{'pure-menu-disabled':c.active}") {{c.label}}
+
+                    h2 Idioma
+                    ul.pure-menu-list(data-ng-repeat="l in lang")
+                        li.pure-menu-item: a(href="#/{{l.label|enlace}}") {{l.label}}
+
+                    h2 Publicación
+                    ul.pure-menu-list(data-ng-repeat="p in publications")
+                        li.pure-menu-item: a(href="#/{{p.label|enlace}}") {{p.label}}
+
+                    h2 Presentación
+                    ul.pure-menu-list(data-ng-repeat="e in edition[0]")
+                        li.pure-menu-item: a(href="#/{{e.label|enlace}}") {{e.label}}
+
+                content.pure-u-1.pure-u-md-3-4(ng-if = "books")
+                    ul.movies.pure-g
+                        li(data-ng-repeat="book in books | filter:bookName | categorieSel:filter_categorie").pure-u-1-2.pure-u-md-1-3
+                            img(ng-src="{{book.image}}").pure-img
+                            h2 {{book.title}}
+                            p {{book.teaser}}
+                    .pagination.pure-menu.pure-menu-horizontal
+                        ul.pure-menu-list
+                            li.pure-menu-item
+                                a(href="#").pure-menu-link Anterior
+                            li.pure-menu-item
+                                a(href="#").pure-menu-link Siguiente
+
+
+            footer.pure-u-1
+            
+        //- third party libraries
+        script(src="libraries/js/libraries.min.js")
+        script(src="scripts/app.min.js")
